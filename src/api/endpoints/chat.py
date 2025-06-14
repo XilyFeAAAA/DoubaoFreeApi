@@ -10,7 +10,7 @@ router = APIRouter()
 @router.post("/completions", response_model=CompletionResponse)
 async def api_completions(completion: CompletionRequest = Body()):
     """
-    豆包聊天补全接口(目前仅支持文字消息和图片消息)
+    豆包聊天补全接口(目前仅支持文字消息e和图片消息)
     1. 如果是新聊天 conversation_id="0" section_id不填
     2. 如果沿用之前的聊天, 则沿用用**第一次对话**返回的 conversation_id 和 section_id
     """
@@ -19,7 +19,9 @@ async def api_completions(completion: CompletionRequest = Body()):
             prompt=completion.prompt,
             conversation_id=completion.conversation_id,
             section_id=completion.section_id,
-            attachments=completion.attachments
+            attachments=completion.attachments,
+            use_auto_cot=completion.use_auto_cot,
+            use_deep_think=completion.use_deep_think
         )
         return CompletionResponse(
             text=text, 

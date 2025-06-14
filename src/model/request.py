@@ -5,6 +5,8 @@ class CompletionRequest(BaseModel):
     attachments: list[dict] = []
     conversation_id: str = "0" 
     section_id: str | None = None
+    use_deep_think: bool = False
+    use_auto_cot: bool = False
 
 
 class AttachmentRequest(BaseModel):

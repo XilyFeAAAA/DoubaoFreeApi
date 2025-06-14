@@ -43,7 +43,8 @@ params = "&".join([
 
 
 
-async def chat_completion(prompt: str, conversation_id: str, section_id: str = None, attachments: list[dict] = []):
+async def chat_completion(prompt: str, conversation_id: str, section_id: str = None, 
+                        attachments: list[dict] = [], use_auto_cot: bool = False, use_deep_think: bool = False):
     local_msg_id = str(uuid.uuid4())
     local_conv_id = f"local_{int(uuid.uuid4().int % 10000000000000000)}"
     # ------ URL -------
@@ -55,6 +56,8 @@ async def chat_completion(prompt: str, conversation_id: str, section_id: str = N
             "with_suggest": False,
             "need_create_conversation": conversation_id == "0",
             "launch_stage": 1,
+            "use_auto_cot": use_auto_cot,
+            "use_deep_think": use_deep_think
         },
         "conversation_id": conversation_id,
         "local_conversation_id": local_conv_id,
@@ -118,6 +121,7 @@ async def handle_sse(response: aiohttp.ClientResponse):
         buffer = events.pop()
         
         for evt in events:
+            print(evt)
             lines = evt.strip().split('\n')
             data_line = next((l for l in lines if l.startswith('data: ')), None)
             if not data_line:

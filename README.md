@@ -34,21 +34,8 @@
 
 </p>
  
-## 目录
-
-- [Doubao Free API](#doubao-free-api)
-  - [目录](#目录)
-    - [TODO](#todo)
-    - [如何抓取豆包配置](#如何抓取豆包配置)
-    - [上手指南](#上手指南)
-      - [开发前的配置要求](#开发前的配置要求)
-      - [安装步骤](#安装步骤)
-    - [项目结构](#项目结构)
-    - [开发文档](#开发文档)
-      - [API 接口](#api-接口)
-      - [贡献指南](#贡献指南)
-    - [版权说明](#版权说明)
-    - [鸣谢](#鸣谢)
+## 近期更新
+1. 适配新版本豆包，在`/api/chat/completions`接口中可以选择是否打开深度思考
 
 ### TODO
 
@@ -149,7 +136,9 @@ DoubaoFreeApi
            }
          ],
          "conversation_id": "0",  // 新聊天使用"0"
-         "section_id": null       // 新聊天为null
+         "section_id": null,       // 新聊天为null
+         "use_auto_cot": false,    // 自动选择深度思考
+         "use_deep_think": false   // 深度思考
        }
        ```
      - **响应**：
