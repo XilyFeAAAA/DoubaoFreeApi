@@ -285,7 +285,7 @@ async function sendMessage() {
             attachments: attachments,
             use_auto_cot: useAutoCotCheckbox.checked,
             use_deep_think: useDeepThinkCheckbox.checked,
-            is_logged: isLoggedIn
+            guest: !isLoggedIn
         };
         
         // 只有在登录状态下且非新会话时才添加conversation_id和section_id

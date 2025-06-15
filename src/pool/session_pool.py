@@ -68,9 +68,9 @@ class SessionPool:
         """获取会话配置，如果不存在则随机"""
         if conversation_id is None:
             if guest:
-                return random.choice(self.guest_sessions) if self.auth_sessions else None
+                return random.choice(self.guest_sessions) if self.guest_sessions else None
             else:
-                return random.choice(self.auth_sessions) if self.guest_sessions else None
+                return random.choice(self.auth_sessions) if self.auth_sessions else None
         else:
             return self.session_map.get(conversation_id)
     

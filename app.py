@@ -34,10 +34,10 @@ async def index(request: Request):
 
 @app.on_event("startup")
 async def startup():
-    await session_pool.fetch_guest_session(3)
-    print(session_pool.guest_sessions)
+    await session_pool.fetch_guest_session(0)
+    print("成功获取游客Session")
 
 app.include_router(router, prefix="/api")
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run("app:app", host="0.0.0.0", port=8001, reload=False)
