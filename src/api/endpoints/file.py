@@ -12,4 +12,4 @@ async def api_upload(file_type: int = Query(), file_name: str = Query(), file_by
     try:
         return await upload_file(file_type, file_name, file_bytes)
     except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"生成文件失败：{str(e)}")

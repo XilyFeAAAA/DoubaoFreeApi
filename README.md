@@ -36,11 +36,13 @@
  
 ## 近期更新
 1. 适配新版本豆包，在`/api/chat/completions`接口中可以选择是否打开深度思考
+2. 支持游客模式下对话，但是**没有上下文**
+3. 实现简易 Session 池，可以在session.json中添加登录账户的 Session，在app.py中获取未登录 Session
+4. 实现了简易的前端对话界面
 
 ### TODO
 
-- [ ] 支持更多豆包API接口(目前仅支持生成图片，以及得到文字图片信息)
-- [ ] 实现未登录状态下API请求
+- [ ] 实现未登录状态下携带上下文信息（目前，如果在未登录状态下写到conversation_id，返回500错误）
 
 ### 如何抓取豆包配置
 
@@ -48,7 +50,7 @@
 - 打开浏览器（推荐Chrome或Edge）
 - 访问豆包网页版 [豆包](https://www.doubao.com) 并登录
 - 按F12打开开发者工具，切换到"网络"(Network)选项卡
-- 随意发送一条消息给
+- 随意发送一条消息给豆包
 - 在网络请求中找到`completions`相关请求, 参数位于**请求头**、**Cookies**、**Payload**中
 
 > **注意**: 这些配置信息有时效性，可能需要定期更新。请勿分享您的个人配置信息。
@@ -79,8 +81,8 @@ uv pip install -r requirements.txt
 3. 配置环境变量
 ```sh
 # 复制示例环境变量文件
-cp .example.env .env
-# 编辑 .env 文件，填入豆包平台的相关凭证
+cp example.session.json session.json
+# 编辑 session.json 文件，填入豆包平台的相关凭证
 ```
 
 4. 启动服务
@@ -96,15 +98,21 @@ uv run app.py
 DoubaoFreeApi
 ├── README.md           # 项目说明文档
 ├── requirements.txt    # 项目依赖
-├── .example.env        # 环境变量示例
+├── example.session.json# 环境变量示例
 ├── app.py              # 应用入口
 └── /src/               # 源代码目录
     ├── config.py       # 配置管理
     ├── /api/           # API路由
     ├── /model/         # 数据模型
     └── /service/       # 业务逻辑服务
+    └── /pool/          # Session 池
 ```
 
+### 前端界面
+
+<p align="center">
+  <img src="imgs/frontend-ui.png" alt="API文档" width="800">
+</p>
 
 
 ### 开发文档
@@ -125,6 +133,7 @@ DoubaoFreeApi
        ```json
        {
          "prompt": "用户输入的消息",
+         "guest": false,
          "attachments": [
            {
              "key": "文件标识符",
@@ -152,8 +161,9 @@ DoubaoFreeApi
        }
        ```
      - **说明**：
-       - 如果是新聊天，conversation_id="0"，section_id不填
+       - 如果是新聊天，conversation_id, section_id不填
        - 如果沿用之前的聊天，则使用第一次对话返回的conversation_id和section_id
+       - 如果使用游客账号，那么不支持上下文
 
    - **POST** `/api/chat/delete`
      - **功能**：删除聊天会话

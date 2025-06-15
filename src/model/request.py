@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 
 class CompletionRequest(BaseModel):
-    prompt: str 
+    prompt: str
+    guest: bool
     attachments: list[dict] = []
-    conversation_id: str = "0" 
+    conversation_id: str | None = None
     section_id: str | None = None
     use_deep_think: bool = False
     use_auto_cot: bool = False

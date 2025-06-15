@@ -11,12 +11,14 @@ router = APIRouter()
 async def api_completions(completion: CompletionRequest = Body()):
     """
     豆包聊天补全接口(目前仅支持文字消息e和图片消息)
-    1. 如果是新聊天 conversation_id="0" section_id不填
-    2. 如果沿用之前的聊天, 则沿用用**第一次对话**返回的 conversation_id 和 section_id
+    1. 如果是新聊天 conversation_id, section_id**不填**
+    2. 如果沿用之前的聊天, 则沿用**第一次对话**返回的 conversation_id 和 section_id, 会话池会使用之前的参数
+    3. 目前如果使用未登录账号，那么不支持上下文
     """
     try:
         text, imgs, conv_id, msg_id, sec_id = await chat_completion(
             prompt=completion.prompt,
+            guest=completion.guest,
             conversation_id=completion.conversation_id,
             section_id=completion.section_id,
             attachments=completion.attachments,
@@ -31,7 +33,7 @@ async def api_completions(completion: CompletionRequest = Body()):
             section_id=sec_id
             )
     except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 
@@ -49,4 +51,4 @@ async def api_delete(conversation_id: str = Query()):
             msg=msg
         )
     except Exception as e:
-        return HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
