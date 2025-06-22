@@ -35,10 +35,7 @@
 </p>
  
 ## 近期更新
-1. 适配新版本豆包，在`/api/chat/completions`接口中可以选择是否打开深度思考
-2. 支持游客模式下对话，但是**没有上下文**
-3. 实现简易 Session 池，可以在session.json中添加登录账户的 Session，在app.py中获取未登录 Session
-4. 实现了简易的前端对话界面
+1. 获取无水印图片
 
 ## TODO
 
