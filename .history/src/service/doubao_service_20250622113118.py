@@ -160,8 +160,7 @@ async def handle_sse(response: aiohttp.ClientResponse):
                             # 只处理status为2的完成图片
                             if image_info.get('status') == 2:
                                 url = (image_info.get('image_raw', {}).get('url') or 
-                                        image_info.get('image_thumb', {}).get('url') or
-                                        image_info.get('image_ori', {}).get('url'))
+                                        image_info.get('image_thumb', {}).get('url'))
                                 
                                 if url and url not in image_urls:
                                     image_urls.append(url)
